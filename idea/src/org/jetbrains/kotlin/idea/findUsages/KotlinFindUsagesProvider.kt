@@ -28,6 +28,7 @@ import org.jetbrains.kotlin.idea.caches.resolve.unsafeResolveToDescriptor
 import org.jetbrains.kotlin.idea.util.IdeDescriptorRenderers
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
+import org.jetbrains.kotlin.psi.psiUtil.isPropertyParameter
 import org.jetbrains.kotlin.types.typeUtil.isUnit
 
 class KotlinFindUsagesProvider : FindUsagesProvider {
@@ -82,6 +83,14 @@ class KotlinFindUsagesProvider : FindUsagesProvider {
             is KtLabeledExpression -> element.getLabelName() ?: ""
             is KtImportAlias -> element.getName() ?: ""
             is KtLightElement<*, *> -> element.kotlinOrigin?.let { getDescriptiveName(it) } ?: ""
+            is KtParameter -> {
+                if (element.isPropertyParameter()) {
+                    (element.name ?: "") + (element.containerDescription?.let { " of $it" } ?: "")
+                } else {
+                    element.name ?: ""
+                }
+            }
+            is PsiNamedElement -> element.name ?: ""
             else -> ""
         }
     }
