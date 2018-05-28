@@ -161,7 +161,9 @@ public class KotlinTypeMapper {
             @NotNull String moduleName,
             boolean isJvm8Target
     ) {
-        this(bindingContext, classBuilderMode, incompatibleClassTracker, moduleName, isJvm8Target, false);
+        this(bindingContext, classBuilderMode, incompatibleClassTracker, moduleName, isJvm8Target, false,
+             DeferredTypesTracker.Throwing.INSTANCE
+        );
     }
 
     public KotlinTypeMapper(
@@ -171,7 +173,7 @@ public class KotlinTypeMapper {
             @NotNull String moduleName,
             boolean isJvm8Target,
             boolean isReleaseCoroutines,
-            DeferredTypesTracker deferredTypesTracker
+            @NotNull DeferredTypesTracker deferredTypesTracker
     ) {
         this.bindingContext = bindingContext;
         this.classBuilderMode = classBuilderMode;
